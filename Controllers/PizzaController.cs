@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using la_mia_pizzeria_post.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace la_mia_pizzeria_post.Controllers
 {
     public class PizzaController : Controller
     {
         private readonly List<Pizza> _pizze = new()
-    {
+        {
         new Pizza
         {
             Id = 1,
@@ -55,6 +56,32 @@ namespace la_mia_pizzeria_post.Controllers
         public IActionResult Index()
         {
             return View(_pizze);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Pizza formPizza)
+        {
+            using(ApplicationDbContext context = new ApplicationDbContext())
+            {
+                Pizza pizzaCreate = new Pizza();
+                pizzaCreate.Nome = formPizza.Nome;
+                pizzaCreate.Descrizione = formPizza.Descrizione;
+                pizzaCreate.Foto = formPizza.Foto;
+                pizzaCreate.Prezzo = formPizza.Prezzo;
+
+                context.Pizze.Add(pizzaCreate);
+
+                context.SaveChanges();
+
+                return RedirectToAction("Pizza");
+            }
+    
+        }
+
+        public ActionResult Create()
+        {
+            return View();
         }
     }
 }
