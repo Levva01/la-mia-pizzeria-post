@@ -2,13 +2,9 @@
 
 <div class="container">
 
-    <form asp-controller="Greeting" asp-action="Create" method="post">
+    <form asp-controller="Pizza" asp-action="Create" method="post">
 
         @Html.AntiForgeryToken()
-        <div class="mb-3">
-            <strong>Id:</strong>
-            <input asp-for="Id" class="d-block w-100" />
-        </div>
         <div class="mb-3">
             <strong>Nome:</strong>
             <input asp-for="Nome" class="d-block w-100" />
